@@ -18,7 +18,7 @@ public class driveCommand extends CommandBase {
 
   private XboxController controller;
   private boolean slowMode;
-  private boolean YuMode;
+
 
 
 
@@ -33,30 +33,28 @@ public class driveCommand extends CommandBase {
   public void initialize() 
   {
     slowMode = false;
-    YuMode = false; 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double leftX, leftY, rightX, rightY;
+    double leftX, leftY, rightX;
     if (controller.getBackButtonPressed())
     {
       slowMode = !slowMode;
     }
-    if (controller.getStartButton())
-    {
-      YuMode= !YuMode;
-    }
-
+    
 
 
     leftX = -MathUtil.applyDeadband(controller.getLeftX(), OIConstants.kDriveDeadband);
     leftY = -MathUtil.applyDeadband(controller.getLeftY(), OIConstants.kDriveDeadband);
     rightX = -MathUtil.applyDeadband(controller.getRightX(), OIConstants.kDriveDeadband);
-    rightY = -MathUtil.applyDeadband(controller.getRightY(), OIConstants.kDriveDeadband);
 
 
+    // Apply non-linear input (squaring the input)
+    leftX = Math.copySign(Math.pow(leftX, 2), leftX);
+    leftY = Math.copySign(Math.pow(leftY, 2), leftY);
+    rightX = Math.copySign(Math.pow(rightX, 2), rightX);
 
 
     if (slowMode)
@@ -65,12 +63,7 @@ public class driveCommand extends CommandBase {
       leftY *= Constants.DriveConstants.slowModeMultiplier;
       rightX *= Constants.DriveConstants.slowModeMultiplier;
     }
-    if (YuMode){
-      m_swerveDrive.drive(rightY, rightX, leftX, true, true);
-    }
-    else{
-      m_swerveDrive.drive(leftY, leftX, rightX, true, true);
-    }
+    m_swerveDrive.drive(leftY, leftX, rightX, true, true);
 
   }
 
