@@ -53,14 +53,14 @@ public final class Constants {
 
     // SPARK MAX CAN IDs
     public static final int kFrontLeftDrivingCanId = 0; //TODO: Update with 2024 Robot
-    public static final int kRearLeftDrivingCanId = 0; //TODO: Update with 2024 Robot
-    public static final int kFrontRightDrivingCanId = 0; //TODO: Update with 2024 Robot
-    public static final int kRearRightDrivingCanId = 0; //TODO: Update with 2024 Robot
+    public static final int kRearLeftDrivingCanId = 1; //TODO: Update with 2024 Robot
+    public static final int kFrontRightDrivingCanId = 2; //TODO: Update with 2024 Robot
+    public static final int kRearRightDrivingCanId = 3; //TODO: Update with 2024 Robot
 
-    public static final int kFrontLeftTurningCanId = 0; //TODO: Update with 2024 Robot
-    public static final int kRearLeftTurningCanId = 0; //TODO: Update with 2024 Robot
-    public static final int kFrontRightTurningCanId = 0; //TODO: Update with 2024 Robot
-    public static final int kRearRightTurningCanId = 0; //TODO: Update with 2024 Robot
+    public static final int kFrontLeftTurningCanId = 4; //TODO: Update with 2024 Robot
+    public static final int kRearLeftTurningCanId = 5; //TODO: Update with 2024 Robot
+    public static final int kFrontRightTurningCanId = 6; //TODO: Update with 2024 Robot
+    public static final int kRearRightTurningCanId = 7; //TODO: Update with 2024 Robot
 
     public static final boolean kGyroReversed = false; 
 

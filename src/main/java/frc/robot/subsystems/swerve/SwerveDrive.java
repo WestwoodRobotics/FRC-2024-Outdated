@@ -70,7 +70,7 @@ public class SwerveDrive extends SubsystemBase {
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(gyro.getAngle()),
+      this.getHeadingObject(),
       new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -80,14 +80,19 @@ public class SwerveDrive extends SubsystemBase {
 
 
   public SwerveDrive() {
-        gyro = new Gyro();
+    try {
+      gyro = new Gyro();
+    } catch (NullPointerException e) {
+      System.out.println("Warning: Gyro not responding. Skipping gyro initialization.");
+      gyro = null;
+    }      
   }
 
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        Rotation2d.fromDegrees(gyro.getAngle()),
+        this.getHeadingObject(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -95,8 +100,6 @@ public class SwerveDrive extends SubsystemBase {
             m_rearRight.getPosition()
         });
         SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
-
-
   }
 
   /**
@@ -109,8 +112,12 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public void resetGyro(){
-    gyro.resetYaw();
-    System.out.println("RESET GYRO!");
+    if (gyro != null) {
+      gyro.resetYaw();
+      System.out.println("RESET GYRO!");
+    } else {
+      System.out.println("Warning: Gyro not responding. Skipping gyro reset.");
+    }
   }
 
   /**
@@ -120,7 +127,7 @@ public class SwerveDrive extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(gyro.getAngle()),
+        this.getHeadingObject(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -250,8 +257,25 @@ public class SwerveDrive extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return (Rotation2d.fromDegrees(gyro.getAngle()).getDegrees());
+    if (gyro != null) {
+      return (Rotation2d.fromDegrees(gyro.getAngle()).getDegrees());
+    } else {
+      System.out.println("Warning: Gyro not responding. Returning default heading.");
+      return 0.0; // Return a default value
+    }
+
   }
+
+  public Rotation2d getHeadingObject() {
+    if (gyro != null) {
+      return (Rotation2d.fromDegrees(gyro.getAngle()));
+    } else {
+      System.out.println("Warning: Gyro not responding. Returning default heading.");
+      return Rotation2d.fromDegrees(0); // Return a default value
+    }
+
+  }
+
 
   /**
    * Returns the turn rate of the robot.
@@ -259,9 +283,19 @@ public class SwerveDrive extends SubsystemBase {
    * @return The turn rate of the robot, in degrees per second
    */
   public double getTurnRate() {
-    return gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    if (gyro != null) {
+      return gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    } else {
+      System.out.println("Warning: Gyro not responding. Returning default turn rate.");
+      return 0.0; // Return a default value
+    }
+
   }
   public void recalibrateGyro() {
-    gyro.calibrate();
+    if (gyro != null) {
+      gyro.calibrate();
+    } else {
+      System.out.println("Warning: Gyro not responding. Skipping gyro recalibration.");
+    }
   }
 }
