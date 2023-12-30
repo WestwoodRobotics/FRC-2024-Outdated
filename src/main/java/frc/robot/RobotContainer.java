@@ -32,6 +32,10 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.swerve.driveCommand;
 
 import frc.robot.subsystems.swerve.SwerveDrive;
+import edu.wpi.first.wpilibj.DriverStation;
+
+
+
 
 
 /*
@@ -75,7 +79,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
+    DriverStation.silenceJoystickConnectionWarning(true);
     // Configure default commands 
     m_robotDrive.setDefaultCommand(new driveCommand(m_robotDrive, m_driverController));
 
