@@ -1,5 +1,5 @@
 {
-    "name": "Your Container Name",
+    "name": "WPILib - Ubuntu",
     "dockerFile": "Dockerfile",
     "settings": { 
       "terminal.integrated.shell.linux": "/bin/bash"
