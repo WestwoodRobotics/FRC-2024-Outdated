@@ -15,5 +15,6 @@ jobs:
       - name: Run WPILib simulation
         id: simulation
         run: |
-          trap 'exit_code=$?; if [ $exit_code -eq 124 ]; then exit 0; else exit $exit_code; fi' EXIT
           timeout 10s ./gradlew simulateJava
+          exit_code=$?
+          if [ $exit_code -eq 124 ]; then exit 0; else exit 1; fi
