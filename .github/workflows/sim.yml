@@ -13,5 +13,15 @@ jobs:
             - name: Compile robot code
               run: ./gradlew build
             - name: Run WPILib simulation
+              id: simulation
               run: |
-                timeout 30s ./gradlew simulateJava; exit_code=$?; if [ $exit_code -eq 124 ]; then exit 0; elif [ $exit_code -ne 0 ]; then exit $exit_code; fi
+                timeout 30s ./gradlew simulateJava; exit_code=$?
+                if [ $exit_code -eq 124 ]; then
+                  echo "The command timed out"
+                elif [ $exit_code -ne 0 ]; then
+                  echo "The command failed"
+                fi
+                echo "::set-output name=exit_code::$exit_code"
+            - name: Check simulation result
+              run: exit ${{ steps.simulation.outputs.exit_code }}
+              if: ${{ steps.simulation.outputs.exit_code != '0' && steps.simulation.outputs.exit_code != '124' }}
