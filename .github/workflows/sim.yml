@@ -15,12 +15,12 @@ jobs:
       - name: Run WPILib simulation
         id: simulation
         run: |
-          timeout 10s ./gradlew simulateJava || true
+          timeout 10s ./gradlew simulateJava
           exit_code=$?
           if [ $exit_code -eq 124 ]; then
-            echo "The command timed out (success)"
+            echo "The command ran for at least 10 seconds (success)"
             exit 0
           else
-            echo "The command ended before timeout (failure)"
+            echo "The command ended before 10 seconds (failure)"
             exit 1  # Exit with a failure code
           fi
