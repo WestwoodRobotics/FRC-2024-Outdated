@@ -5,7 +5,7 @@ on: [push, pull_request]  # Trigger the workflow on push events
 jobs:
   run-command:
     runs-on: ubuntu-latest
-
+    container: wpilib/roborio-cross-ubuntu:2024-22.04
     steps:
       - name: Run command with timeout
         run: |
