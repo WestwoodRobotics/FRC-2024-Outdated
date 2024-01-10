@@ -13,10 +13,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Gradle build with timeout
-        timeout-minutes: 1  # Set a timeout for the entire step
-        run: |
-          timeout 10s ./gradlew build || exit 0  # Run build for 10 seconds or until error
 
-          # If the timeout is reached, mark the step as successful
-          echo "Gradle build timed out after 10 seconds, but marking as successful"
-          exit 0
+        run: |
+          timeout 10s ./gradlew build || exit_code=$?
+          if [ $exit_code -eq 124 ]; then
+            echo "Command exited with code 124, ignoring"
+            exit 0
+          else
+            exit $exit_code
+          fi
