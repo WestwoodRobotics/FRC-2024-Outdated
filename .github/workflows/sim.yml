@@ -13,9 +13,8 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Gradle build with timeout
-
         run: |
-          timeout 10s ./gradlew simulateJava || exit_code=$?
+          timeout 30s ./gradlew simulateJava || exit_code=$?
           if [ $exit_code -eq 124 ]; then
             echo "Command exited with code 124, ignoring"
             exit 0
