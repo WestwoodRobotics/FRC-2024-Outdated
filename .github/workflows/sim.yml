@@ -7,8 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     container: wpilib/roborio-cross-ubuntu:2024-22.04
     steps:
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+
+      - uses: actions/checkout@v4
+      - name: Grant execute permission # just in case
+        run: chmod +x gradlew
 
       - name: Run Gradle build with timeout
         timeout-minutes: 1  # Set a timeout for the entire step
