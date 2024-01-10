@@ -21,6 +21,10 @@ jobs:
   
       - name: Run simulateJava with timeout
         run: |
-          ./gradlew simulateJava & pid=$!
-          sleep 10
-          kill -SIGINT $pid || true
+         timeout 10s ./gradlew simulateJava
+         status=$?
+         if [ $status -eq 124 ]; then
+          exit 0
+         else
+           exit 1
+         fi
